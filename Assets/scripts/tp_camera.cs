@@ -23,37 +23,35 @@ public class tp_camera : MonoBehaviour
         StartCoroutine(TeleportProcess());
     }
 
-  
-
-    IEnumerator TeleportProcess()
+  IEnumerator TeleportProcess()
     {   
+        while (true)
+        {
+            // --- ESCENARIO 1 ---
+            CambiarEscenario(escena_1, escena_2, escena_3, posEscenario1, "Escenario 1");
+            yield return new WaitForSeconds(tiempo_para_tp);
 
-        XR_ORIGIN.transform.position = posEscenario1; // la camara se movera a la posicion1
-        Debug.Log("Escenario1"); //comprobar funcionamiento
-        escena_1.SetActive(true); //Los siguientes 3 solo son para activar y desactivar los escenarios con el fin 
-        escena_2.SetActive(false); //de no exigir en cuanto a recursos
-        escena_3.SetActive(false);
+            // --- ESCENARIO 2 ---
+            CambiarEscenario(escena_2, escena_1, escena_3, posEscenario2, "Escenario 2");
+            yield return new WaitForSeconds(tiempo_para_tp);
 
-        // Espera el tiempo configurado antes de cambiar
-        yield return new WaitForSeconds(tiempo_para_tp);
+            // --- ESCENARIO 3 ---
+            CambiarEscenario(escena_3, escena_1, escena_2, posEscenario3, "Escenario 3");
+            yield return new WaitForSeconds(tiempo_para_tp);
+        }
+    }
 
+    private void CambiarEscenario(GameObject activo, GameObject inactivoA, GameObject inactivoB, Vector3 nuevaPosicion, string debugMsg)
+    {
+        if (XR_ORIGIN != null)
+        {
+            XR_ORIGIN.transform.position = nuevaPosicion;
+        }
 
-        XR_ORIGIN.transform.position = posEscenario2;
-        Debug.Log("Escenario2");
-        escena_1.SetActive(false);
-        escena_2.SetActive(true);
-        escena_3.SetActive(false);
+        if (activo != null) activo.SetActive(true);
+        if (inactivoA != null) inactivoA.SetActive(false);
+        if (inactivoB != null) inactivoB.SetActive(false);
 
-        yield return new WaitForSeconds(tiempo_para_tp);
-
-
-        XR_ORIGIN.transform.position = posEscenario3;
-        Debug.Log("Escenario3");
-        escena_1.SetActive(false);
-        escena_2.SetActive(false);
-        escena_3.SetActive(true);
-
-        //reinicia la corrutina para crear un bucle infinito
-        StartCoroutine(TeleportProcess());
+        Debug.Log(debugMsg);
     }
 }

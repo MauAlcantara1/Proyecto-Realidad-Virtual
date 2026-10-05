@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "ProyectoRealidadVirtual.slnx"
+    "dotnet.defaultSolution": "Proyecto-Realidad-Virtual.slnx"
 }
